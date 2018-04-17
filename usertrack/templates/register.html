@@ -1,0 +1,11 @@
+{% extends "layouts/base.html" %}
+{% block body %}
+<form method="POST" action="{{url_for("post_register")}}">
+  Email: <input name="email"><br>
+  Given Name: <input name="first_name"><br>
+  Family Name: <input name="last_name"><br>
+  Password: <input type="password" name="password"><br>
+  Password Again: <input type="password" name="confirm_password"><br>
+  <input type="submit">
+</form>
+{% endblock %}

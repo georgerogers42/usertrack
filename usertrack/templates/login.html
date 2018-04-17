@@ -1,0 +1,12 @@
+{% extends "layouts/base.html" %}
+{% block body %}
+<a href="{{url_for("get_register")}}">Register</a>
+<form method="POST" action="{{url_for("post_login")}}">
+  Email: <input name="email">
+  Password: <input type="password" name="password">
+  <input type="submit" value="Login">
+</form>
+<form method="POST" action="{{url_for("post_logout")}}">
+  <input type="submit" value="Logout">
+</form>
+{% endblock %}

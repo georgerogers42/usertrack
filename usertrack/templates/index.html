@@ -1,0 +1,24 @@
+{% extends "layouts/base.html" %}
+{% block body %}
+<a href="{{url_for("get_login")}}">Switch User</a>
+<table>
+  <tr><th>Email</th><td>{{ user.email }}</td></tr>
+  <tr><th>First Name</th><td>{{ user.first_name }}</td></tr>
+  <tr><th>Last Name</th><td>{{ user.last_name }}</td></tr>
+  <tr><th>Full Name</th><td>{{ user.full_name }}</td></tr>
+</table>
+{% for post in user.posts_to %}
+<div class="post">
+  <h1 class="post-title">{{ post.title }}</h1>
+  <h2 class="post-author"><a href="{{ url_for("get_user", email=post.from_user.email)}}">{{ post.from_user.to_line }}</a></h2>
+  {{ post.contents }}
+</div>
+{% endfor %}
+{% if poster %}
+<form method="POST" action="{{url_for("post_user", email=user.email)}}">
+  <input name="title">
+  <textarea name="contents"></textarea>
+  <input type="submit">
+</form>
+{% endif %}
+{% endblock %}
