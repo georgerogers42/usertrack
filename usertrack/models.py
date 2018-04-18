@@ -41,7 +41,7 @@ class User(Base, ArrowTime):
     last_name = Column(String, nullable=False)
     password = Column(String, nullable=False)
     ctime = Column(DateTime, nullable=False, default=lambda:arrow.get().datetime)
-    posts_from = relationship("Post", foreign_keys="Post.from_user_id", order_by="desc(Post.ctime)")
+    posts_from = relationship("Post", foreign_keys="Post.from_user_id", order_by="desc(Post.ctime)", back_populates="from_user")
     def set_password(self, clearpass):
         self.password = argon2.hash(clearpass)
     def has_password(self, clearpass):
@@ -57,7 +57,7 @@ class Post(Base, ArrowTime):
     __tablename__ = "posts"
     id = Column(Integer, primary_key=True)
     from_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    from_user = relationship("User", foreign_keys=from_user_id)
+    from_user = relationship("User", foreign_keys=from_user_id, back_populates="posts_from")
     title = Column(String, nullable=False)
     contents = Column(String, nullable=False)
     ctime = Column(DateTime, nullable=False, default=lambda:arrow.get().datetime)
