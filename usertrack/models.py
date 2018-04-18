@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 from passlib.hash import argon2
 
-engine = create_engine(environ.get("DATABASE_URL", "postgres://localhost/users_dev"))
+engine = create_engine(environ.get("DATABASE_URL", "postgres://localhost/users_dev"), echo=True)
 
 Session = sessionmaker(engine)
 
@@ -41,6 +41,7 @@ class User(Base, ArrowTime):
     last_name = Column(String, nullable=False)
     password = Column(String, nullable=False)
     ctime = Column(DateTime, nullable=False, default=lambda:arrow.get().datetime)
+    posts_from = relationship("Post", foreign_keys="Post.from_user_id", order_by="desc(Post.ctime)")
     def set_password(self, clearpass):
         self.password = argon2.hash(clearpass)
     def has_password(self, clearpass):
@@ -56,8 +57,8 @@ class Post(Base, ArrowTime):
     __tablename__ = "posts"
     id = Column(Integer, primary_key=True)
     from_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    from_user = relationship("User", foreign_keys=from_user_id)
     title = Column(String, nullable=False)
     contents = Column(String, nullable=False)
     ctime = Column(DateTime, nullable=False, default=lambda:arrow.get().datetime)
     utime = Column(DateTime, nullable=False, default=lambda:arrow.get().datetime)
-    from_user = relationship("User", backref="posts_from", foreign_keys=from_user_id, order_by=ctime)

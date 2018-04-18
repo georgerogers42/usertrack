@@ -1,6 +1,6 @@
 import re
 from os import environ
-from flask import Flask, render_template, request, session, flash, redirect, url_for
+from flask import Flask, render_template, request, session, flash, redirect, url_for, abort
 from email_validator import validate_email, EmailNotValidError
 from .models import db_session, User, Post
 
