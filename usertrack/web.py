@@ -18,6 +18,7 @@ def get_index():
     with db_session() as s:
         poster = user = check_login(s, session.get("email", ""), session.get("clearpass", ""))
         if user:
+            posts = s.query(Post).order_by(Post.ctime.desc()).all()
             return render_template("index.html", **locals())
         else:
             return redirect(url_for("get_login"))
@@ -28,7 +29,7 @@ def get_user(email):
         poster = check_login(s, session.get("email", ""), session.get("clearpass", ""))
         user = s.query(User).filter(email==User.email).first()
         if user:
-            return render_template("index.html", **locals())
+            return render_template("sent.html", **locals())
         else:
             abort(404)
 
@@ -55,7 +56,7 @@ def post_user(email):
             flash("Invalid Contents")
             valid = False
         if poster and user and valid:
-            post = Post(from_user_id=poster.id, to_user_id=user.id, title=title, contents=contents)
+            post = Post(from_user_id=poster.id, title=title, contents=contents)
             s.add(post)
         return redirect(url_for("get_user", email=email))
 

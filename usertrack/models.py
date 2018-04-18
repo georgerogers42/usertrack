@@ -25,7 +25,15 @@ def db_session():
 
 Base = declarative_base(engine)
 
-class User(Base):
+class ArrowTime(object):
+    @property
+    def arrow_ctime(self):
+        return arrow.get(self.ctime)
+    @property
+    def arrow_utime(self):
+        return arrow.get(self.utime)
+
+class User(Base, ArrowTime):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True)
     email = Column(String, nullable=False, unique=True)
@@ -44,14 +52,12 @@ class User(Base):
     def to_line(self):
         return "%s <%s>" % (self.full_name, self.email)
 
-class Post(Base):
+class Post(Base, ArrowTime):
     __tablename__ = "posts"
     id = Column(Integer, primary_key=True)
     from_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    from_user = relationship("User", backref="posts_from", foreign_keys=from_user_id)
-    to_user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    to_user = relationship("User", backref="posts_to", foreign_keys=to_user_id)
     title = Column(String, nullable=False)
     contents = Column(String, nullable=False)
     ctime = Column(DateTime, nullable=False, default=lambda:arrow.get().datetime)
     utime = Column(DateTime, nullable=False, default=lambda:arrow.get().datetime)
+    from_user = relationship("User", backref="posts_from", foreign_keys=from_user_id, order_by=ctime)

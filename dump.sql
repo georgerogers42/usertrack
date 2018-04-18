@@ -40,7 +40,6 @@ SET default_with_oids = false;
 CREATE TABLE public.posts (
     id integer NOT NULL,
     from_user_id integer NOT NULL,
-    to_user_id integer NOT NULL,
     ctime timestamp with time zone DEFAULT '2018-04-17 11:13:43.360042-05'::timestamp with time zone NOT NULL,
     utime timestamp with time zone DEFAULT '2018-04-17 11:13:43.360042-05'::timestamp with time zone NOT NULL,
     title character varying NOT NULL,
@@ -120,7 +119,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 -- Data for Name: posts; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.posts (id, from_user_id, to_user_id, ctime, utime, title, contents) FROM stdin;
+COPY public.posts (id, from_user_id, ctime, utime, title, contents) FROM stdin;
 \.
 
 
@@ -176,14 +175,6 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.posts
     ADD CONSTRAINT posts_from_user_id_fkey FOREIGN KEY (from_user_id) REFERENCES public.users(id);
-
-
---
--- Name: posts posts_to_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.posts
-    ADD CONSTRAINT posts_to_user_id_fkey FOREIGN KEY (to_user_id) REFERENCES public.users(id);
 
 
 --

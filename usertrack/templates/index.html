@@ -1,5 +1,6 @@
 {% extends "layouts/base.html" %}
 {% block body %}
+{{ super() }}
 <a href="{{url_for("get_login")}}">Switch User</a>
 <table>
   <tr><th>Email</th><td>{{ user.email }}</td></tr>
@@ -7,10 +8,10 @@
   <tr><th>Last Name</th><td>{{ user.last_name }}</td></tr>
   <tr><th>Full Name</th><td>{{ user.full_name }}</td></tr>
 </table>
-{% for post in user.posts_to %}
+{% for post in posts %}
 <div class="post">
   <h1 class="post-title">{{ post.title }}</h1>
-  <h2 class="post-author"><a href="{{ url_for("get_user", email=post.from_user.email)}}">{{ post.from_user.to_line }}</a></h2>
+  <h2 class="post-author"><a href="{{ url_for("get_user", email=post.from_user.email)}}">{{ post.from_user.to_line }}</a> &mdash; {{ post.arrow_ctime }}</h2>
   {{ post.contents }}
 </div>
 {% endfor %}
