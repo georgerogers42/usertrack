@@ -135,14 +135,14 @@ COPY public.users (id, first_name, last_name, email, password, ctime) FROM stdin
 -- Name: posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.posts_id_seq', 6, true);
+SELECT pg_catalog.setval('public.posts_id_seq', 8, true);
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 7, true);
+SELECT pg_catalog.setval('public.users_id_seq', 9, true);
 
 
 --
