@@ -4,6 +4,7 @@
     {% block head %}
     <title>{% block title %}Login{% endblock %}</title>
     {% block css %}
+    <link rel="stylesheet" href="{{url_for("static", filename="css/style.css")}}">
     {% endblock %}
     {% endblock %}
   </head>
